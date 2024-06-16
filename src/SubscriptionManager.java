@@ -1,10 +1,11 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class SubscriptionManager {
 
-    private Map<String, WebsiteSubscription> subscriptions;
+    private Map<String, WebsiteSubscription> subscriptions = new HashMap<>();
 
 
     public void registerSubscription(WebsiteSubscription subscription) {

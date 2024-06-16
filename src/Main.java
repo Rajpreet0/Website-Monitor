@@ -1,6 +1,9 @@
 import java.util.Scanner;
+import java.util.UUID;
 
 public class Main {
+
+    private static SubscriptionManager subscriptionManager = new SubscriptionManager();
 
     public static void main(String[] args) {
         terminalUI();
@@ -42,16 +45,14 @@ public class Main {
 
             switch (choosing) {
                 case 1:
-                    //TODO: Subscribe to a Website
-                    System.out.println("TODO: Subscribe to a Website");
+                    subscribeToWebsite(scanner, user);
                     break;
                 case 2:
                     //TODO: Manage a Subscription
                     System.out.println("TODO: Manage a Subscription");
                     break;
                 case 3:
-                    //TODO: Cancel a Subscription
-                    System.out.println("TODO: Cancel a Subscription");
+                    cancelSubscription(scanner);-
                     break;
                 case 0:
                     System.out.println("Exiting...");
@@ -63,4 +64,33 @@ public class Main {
 
         }
     }
+
+    public static void subscribeToWebsite(Scanner scanner, User user) {
+        System.out.print("Enter a Website URL: ");
+        String websiteUrl = scanner.next();
+
+        System.out.print("Enter Notification Frequency: ");
+        String frequency = scanner.next();
+
+        System.out.print("Enter Communication Channel: ");
+        String channel = scanner.next();
+
+        String subscriptionId = UUID.randomUUID().toString();
+        WebsiteSubscription subscription = new WebsiteSubscription(subscriptionId, String.valueOf(user.getUserId()), websiteUrl, frequency, channel);
+        subscriptionManager.registerSubscription(subscription);
+
+        System.out.println("Subscription added successfully!");
+        System.out.println("Subscription ID: " + subscriptionId);
+
+    }
+
+
+    private static void cancelSubscription(Scanner scanner) {
+        System.out.print("Enter subscription ID to cancel: ");
+        String subscriptionID = scanner.next();
+
+        subscriptionManager.cancelSubscription(subscriptionID);
+        System.out.println("Subscription cancelled successfully!");
+    }
+
 }
