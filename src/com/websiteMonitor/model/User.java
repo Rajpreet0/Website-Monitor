@@ -1,3 +1,5 @@
+package com.websiteMonitor.model;
+
 public class User {
 
     private int userId;

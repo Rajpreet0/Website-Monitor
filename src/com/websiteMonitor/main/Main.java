@@ -1,11 +1,31 @@
+package com.websiteMonitor.main;
+
+import com.websiteMonitor.model.User;
+import com.websiteMonitor.model.WebsiteSubscription;
+import com.websiteMonitor.service.NotificationService;
+import com.websiteMonitor.service.SubscriptionManager;
+import com.websiteMonitor.service.WebsiteMonitor;
+import com.websiteMonitor.strategy.ComparisonStrategy;
+import com.websiteMonitor.strategy.ContentSizeStrategy;
+import com.websiteMonitor.strategy.HtmlContentStrategy;
+import com.websiteMonitor.strategy.TextContentStrategy;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 import java.util.UUID;
 
 public class Main {
 
     private static SubscriptionManager subscriptionManager = new SubscriptionManager();
+    private static List<WebsiteSubscription> subscriptions = new ArrayList<>();
+    private static WebsiteMonitor monitor;
+    private static NotificationService notificationService = new NotificationService();
 
     public static void main(String[] args) {
+        monitor = new WebsiteMonitor(subscriptions);
+        monitor.addObserver(notificationService);
+        monitor.startMonitoring();
         terminalUI();
     }
 
@@ -52,10 +72,11 @@ public class Main {
                     System.out.println("TODO: Manage a Subscription");
                     break;
                 case 3:
-                    cancelSubscription(scanner);-
+                    cancelSubscription(scanner);
                     break;
                 case 0:
                     System.out.println("Exiting...");
+                    monitor.stopMonitoring();
                     return;
                 default:
                     System.out.println("Please only enter a valid Number");
@@ -69,15 +90,40 @@ public class Main {
         System.out.print("Enter a Website URL: ");
         String websiteUrl = scanner.next();
 
-        System.out.print("Enter Notification Frequency: ");
-        String frequency = scanner.next();
+        System.out.print("Enter Notification Frequency (in sec): ");
+        int frequency = scanner.nextInt();
+
+        System.out.println("Choose Comparison Strategy:");
+        System.out.println("(1) Identical Content Size");
+        System.out.println("(2) Identical HTML Content");
+        System.out.println("(3) Identical Text Content");
+        System.out.print("Your Value: ");
+        int strategyChoice = scanner.nextInt();
+        ComparisonStrategy strategy;
+
+        switch (strategyChoice) {
+            case 1:
+                strategy = new ContentSizeStrategy();
+                break;
+            case 2:
+                strategy = new HtmlContentStrategy();
+                break;
+            case 3:
+                strategy = new TextContentStrategy();
+                break;
+            default:
+                System.out.println("Invalid choice, using default (Identical Text Content).");
+                strategy = new TextContentStrategy();
+                break;
+        }
 
         System.out.print("Enter Communication Channel: ");
         String channel = scanner.next();
 
         String subscriptionId = UUID.randomUUID().toString();
-        WebsiteSubscription subscription = new WebsiteSubscription(subscriptionId, String.valueOf(user.getUserId()), websiteUrl, frequency, channel);
+        WebsiteSubscription subscription = new WebsiteSubscription(subscriptionId, String.valueOf(user.getUserId()), websiteUrl, frequency, channel, strategy);
         subscriptionManager.registerSubscription(subscription);
+        subscriptions.add(subscription);
 
         System.out.println("Subscription added successfully!");
         System.out.println("Subscription ID: " + subscriptionId);
@@ -90,6 +136,7 @@ public class Main {
         String subscriptionID = scanner.next();
 
         subscriptionManager.cancelSubscription(subscriptionID);
+        subscriptions.removeIf(sub -> sub.getSubscriptionId().equals(subscriptionID));
         System.out.println("Subscription cancelled successfully!");
     }
 

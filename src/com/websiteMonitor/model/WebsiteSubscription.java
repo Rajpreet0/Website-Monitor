@@ -1,19 +1,28 @@
+package com.websiteMonitor.model;
+
+import com.websiteMonitor.strategy.ComparisonStrategy;
 
 public class WebsiteSubscription {
 
     private String subscriptionId;
     private String userId;
     private String websiteUrl;
-    private String notificationFrequency;
+    private int notificationFrequency;
     private String communicationChannel;
+    private String lastFetchedContent;
+    private ComparisonStrategy comparisonStrategy;
 
-    public WebsiteSubscription(String subscriptionId, String userId, String websiteUrl, String notificationFrequency, String communicationChannel) {
+    public WebsiteSubscription(String subscriptionId, String userId, String websiteUrl, int notificationFrequency, String communicationChannel, ComparisonStrategy comparisonStrategy) {
         this.subscriptionId = subscriptionId;
         this.userId = userId;
         this.websiteUrl = websiteUrl;
         this.notificationFrequency = notificationFrequency;
         this.communicationChannel = communicationChannel;
+        this.lastFetchedContent = "";
+        this.comparisonStrategy = comparisonStrategy;
     }
+
+
 
     // Getter methods
     public String getSubscriptionId() {
@@ -29,8 +38,12 @@ public class WebsiteSubscription {
         return websiteUrl;
     }
 
+    public String getLastFetchedContent() {
+        return lastFetchedContent;
+    }
 
-    public String getNotificationFrequency() {
+
+    public int getNotificationFrequency() {
         return notificationFrequency;
     }
 
@@ -39,6 +52,9 @@ public class WebsiteSubscription {
         return communicationChannel;
     }
 
+    public ComparisonStrategy getComparisonStrategy() {
+        return comparisonStrategy;
+    }
 
     // Setter Methods
     public void setSubscriptionId(String subscriptionId) {
@@ -53,7 +69,11 @@ public class WebsiteSubscription {
         this.websiteUrl = websiteUrl;
     }
 
-    public void setNotificationFrequency(String notificationFrequency) {
+    public void setLastFetchedContent(String lastFetchedContent) {
+        this.lastFetchedContent = lastFetchedContent;
+    }
+
+    public void setNotificationFrequency(int notificationFrequency) {
         this.notificationFrequency = notificationFrequency;
     }
 
@@ -61,5 +81,8 @@ public class WebsiteSubscription {
         this.communicationChannel = communicationChannel;
     }
 
+    public void setComparisonStrategy(ComparisonStrategy comparisonStrategy) {
+        this.comparisonStrategy = comparisonStrategy;
+    }
 
 }
