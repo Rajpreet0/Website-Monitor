@@ -1,3 +1,7 @@
+package com.websiteMonitor.service;
+
+import com.websiteMonitor.model.WebsiteSubscription;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -12,7 +16,7 @@ public class SubscriptionManager {
             subscriptions.put(subscription.getSubscriptionId(), subscription);
     }
 
-    public void modifySubscription(String subscriptionId, String newFrequency, String newChannel) {
+    public void modifySubscription(String subscriptionId, int newFrequency, String newChannel) {
             WebsiteSubscription subscription = subscriptions.get(subscriptionId);
             if (subscription != null) {
                 subscription.setNotificationFrequency(newFrequency);
