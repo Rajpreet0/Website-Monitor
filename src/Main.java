@@ -14,10 +14,21 @@ public class Main {
                            "************************************************\n");
 
 
-        System.out.println("\nPlease choose Register to start the Monitor");
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("**************** LOGIN ****************");
         System.out.println("---------------------------------------------");
 
-        Scanner scanner = new Scanner(System.in);
+        System.out.print("Your name: ");
+        String username = scanner.next();
+
+        System.out.print("Your email: ");
+        String email = scanner.next();
+
+
+        User user = new User(1, username, email);
+
+        System.out.println("UserID: " + user.getUserId() + " ,Username: " + user.getName() + " ,Email: " + user.getEmail());
 
         while(true) {
 
