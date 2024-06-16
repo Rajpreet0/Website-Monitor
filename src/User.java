@@ -1,35 +1,36 @@
 public class User {
 
-    private String userId;
+    private int userId;
+    private String name;
     private String email;
-    private String phoneNumber;
 
-    public User(String userId, String email, String phoneNumber) {
+    public User(int userId, String name, String email) {
         this.userId = userId;
+        this.name = name;
         this.email = email;
-        this.phoneNumber = phoneNumber;
     }
 
     // Getter Methods
-    public String getUserId(){
+    public int getUserId(){
         return userId;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public String getEmail() {
         return email;
     }
 
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
 
     // Setter methods
-    public void setEmail(String email) {
-        this.email = email;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
 }
